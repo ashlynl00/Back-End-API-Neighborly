@@ -12,7 +12,11 @@ const neighborhoodController = require('./controllers/neighborhoodController');
 const db = mongoose.connection;
 
 // Connect to Mongo
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+console.log(process.env.MONGO_URI);
 
 // Connection Error/Success
 db.on("error", (err) => console.log(err.message + " is Mongod not running?"));

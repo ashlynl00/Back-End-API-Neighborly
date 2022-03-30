@@ -17,9 +17,12 @@
   },
   "homepage": "https://github.com/ashlynl00/Back-End-API-Neighborly#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-mongodb-session": "^3.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
     "mongoose": "^6.2.8",
     "morgan": "^1.10.0"
   }

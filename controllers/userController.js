@@ -24,6 +24,39 @@ router.get('/', async (req,res)=>{
     };
 });
 
+// login route
+router.post("/login", async (req, res)=>{
+    try{
+        // Grab the user from the database with the username from the form
+        const possibleUser = await User.findOne({username: req.body.username})
+        if(possibleUser){
+            // There is a user with this username!
+            // Compare the password from the form with the database password
+            if(bcrypt.compareSync(req.body.password, possibleUser.password)){
+                // It's a match! Successful login!
+                req.session.isLoggedIn = true;
+                req.session.userId = possibleUser._id;
+                // redirect to home page
+                res.redirect("/")
+            }else{
+                res.redirect("/users/login")
+            }
+            res.send({
+                status: 200,
+                data: newUser
+            });
+        }else{
+            res.send ({
+                status: 500,
+                data: 'not a possible user'
+            });
+        }
+    }catch(err){
+        console.log(err);
+        res.send(500)
+    }
+})
+
 // Create route
 router.post('/', async (req, res)=>{
     try {

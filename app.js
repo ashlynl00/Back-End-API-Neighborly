@@ -53,7 +53,6 @@ app.use(async (req, res, next)=>{
         const currentUser = await User.findById(req.session.userId);
         res.locals.username = currentUser.username;
         res.locals.userId = req.session.userId.toString();
-        res.locals.companyID = currentUser.companyID;
     };
     next();
 });

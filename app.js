@@ -47,6 +47,7 @@ app.use(
       store: store,
 }));
 app.use(async (req, res, next)=>{
+    console.log('in app.js')
     // This will send info from session to templates
     res.locals.isLoggedIn = req.session.isLoggedIn;
     if(req.session.isLoggedIn){

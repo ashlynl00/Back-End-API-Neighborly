@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express();
 const User = require('../models/user');
+const bcrypt = require('bcryptjs');
 
 //// Don't need to create routes that will be forms
 
@@ -26,8 +27,12 @@ router.get('/', async (req,res)=>{
 // Create route
 router.post('/', async (req, res)=>{
     try {
+        const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+        console.log(hashedPassword);
+        req.body.password = hashedPassword;
         // get request from body and use create method to add it to db
         const newUser = await User.create(req.body);
+        console.log(newUser);
         // send back JSON response
         res.send({
             status: 200,

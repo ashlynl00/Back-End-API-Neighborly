@@ -28,6 +28,10 @@ router.get('/', async (req,res)=>{
 router.post("/login", async (req, res)=>{
     try{
         // Grab the user from the database with the username from the form
+        res.send ({
+            status: 500,
+            data: 'before possible user'
+        });
         const possibleUser = await User.findOne({username: req.body.username})
         res.send ({
             status: 500,

@@ -35,6 +35,7 @@ router.post("/login", async (req, res)=>{
             if(bcrypt.compareSync(req.body.password, possibleUser.password)){
                 // It's a match! Successful login!
                 req.session.isLoggedIn = true;
+                console.log(req.session.userId);
                 req.session.userId = possibleUser._id;
                 // redirect to home page
                 res.redirect("/")

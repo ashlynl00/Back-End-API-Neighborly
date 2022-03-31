@@ -29,14 +29,26 @@ router.post("/login", async (req, res)=>{
     try{
         // Grab the user from the database with the username from the form
         const possibleUser = await User.findOne({username: req.body.username})
+        res.send ({
+            status: 500,
+            data: 'right after first thing'
+        });
         if(possibleUser){
             // There is a user with this username!
             // Compare the password from the form with the database password
             if(bcrypt.compareSync(req.body.password, possibleUser.password)){
+                res.send ({
+                    status: 500,
+                    data: 'after compare sync'
+                });
                 // It's a match! Successful login!
                 req.session.isLoggedIn = true;
                 console.log(req.session.userId);
                 req.session.userId = possibleUser._id;
+                res.send ({
+                    status: 500,
+                    data: 'after req.session.userId'
+                });
                 // redirect to home page
                 res.redirect("/")
             }else{
@@ -54,7 +66,10 @@ router.post("/login", async (req, res)=>{
         }
     }catch(err){
         console.log(err);
-        res.send(500)
+        res.send ({
+            status: 500,
+            data: 'in catch'
+        });
     }
 })
 

@@ -15,7 +15,11 @@ const store = new MongoDBStore({
 const neighborhoodController = require('./controllers/neighborhoodController');
 const userController = require('./controllers/userController');
 
-
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+ }
 // Configuration
 const db = mongoose.connection;
 
@@ -32,31 +36,11 @@ db.on("connected", () => console.log("mongo connected: ", process.env.MONGO_URI)
 db.on("disconnected", () => console.log("mongo disconnected"));
 
 app.use(express.urlencoded({extended: true}));
-app.use(express.static("public"));
-app.use(require('./middleware/logger'));
-const isLoggedIn = require('./middleware/isLoggedIn');
 app.use(express.json());
 app.use(morgan('short'));
-app.use(cors());
+//app.use(cors());
+app.use(cors(corsOptions));
 
-app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: store,
-}));
-app.use(async (req, res, next)=>{
-    console.log('in app.js')
-    // This will send info from session to templates
-    res.locals.isLoggedIn = req.session.isLoggedIn;
-    if(req.session.isLoggedIn){
-        const currentUser = await User.findById(req.session.userId);
-        res.locals.username = currentUser.username;
-        res.locals.userId = req.session.userId.toString();
-    };
-    next();
-});
 
 // preroute
 app.use('/neighborhoods', neighborhoodController);

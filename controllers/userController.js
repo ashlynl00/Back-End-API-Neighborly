@@ -112,12 +112,19 @@ router.get('/:id', async (req, res)=>{
 router.put('/:id', async (req, res)=>{
     try {
         // find the item that was clicked on
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        console.log(req.body);
+         const user = await User.findById(req.params.id);
+         if (req.body.neighborhood) {
+             user.neighborhood.push(req.body.neighborhood);
+         } 
+         user.save();
+        console.log(user);
         res.send({
             status: 200,
             data: user
         });
     } catch (err) {
+        console.log(err);
         res.send({
             status: 500,
             data: err.message

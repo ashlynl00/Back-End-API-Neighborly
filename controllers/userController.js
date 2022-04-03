@@ -116,7 +116,12 @@ router.put('/:id', async (req, res)=>{
          const user = await User.findById(req.params.id);
          if (req.body.neighborhood) {
              user.neighborhood.push(req.body.neighborhood);
-         } 
+             console.log('inside join neighborhood')
+         } else if (req.body.neighborhoodIdToRemove) {
+             let index = user.neighborhood.indexOf(req.body.neighborhoodIdToRemove);
+             user.neighborhood.splice(index, 1);
+             console.log('inside unjoin')
+         }
          user.save();
         console.log(user);
         res.send({

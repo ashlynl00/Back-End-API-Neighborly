@@ -67,21 +67,36 @@ router.post("/login", async (req, res)=>{
 // Create route
 router.post('/', async (req, res)=>{
     try {
+        console.log(req.body.username)
+        const findSameUser = await User.findOne({username: req.body.username});
         const hashedPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
         console.log(hashedPassword);
         req.body.password = hashedPassword;
         // get request from body and use create method to add it to db
         const newUser = await User.create(req.body);
-        console.log(newUser);
-        // send back JSON response
-        res.send({
-            status: 200,
-            data: newUser
-        });
+        console.log('below is the results of finding same user')
+        console.log(findSameUser);
+        if (findSameUser == null) {
+            console.log('did not find same username')
+            console.log(newUser);
+            // send back JSON response
+            res.send({
+                status: 200,
+                data: newUser
+            });
+        } else {
+            console.log('oops, found same username')
+            // send back JSON response
+            res.send({
+                status: 200,
+                data: 'this username already exists'
+            });
+        }
     } catch (err) {
+        console.log('in catch')
         res.send({
             status: 500,
-            data: err.message
+            data: 'duplicate usernames'
         });
     };
 });

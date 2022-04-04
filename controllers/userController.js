@@ -37,7 +37,7 @@ router.post("/login", async (req, res)=>{
             // There is a user with this username!
             // Compare the password from the form with the database password
             if(bcrypt.compareSync(req.body.password, possibleUser.password)){
-                console.log('inside if statement');
+                console.log('inside if statement that passwords did match');
                 // It's a match! Successful login!
                 //respond to front end here
                 res.send ({
@@ -45,6 +45,7 @@ router.post("/login", async (req, res)=>{
                     data: possibleUser
                 });
             }else{
+                console.log('in else that passwords did not match');
                 res.send ({
                     status: 200,
                     data: 'did not match'

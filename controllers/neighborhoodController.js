@@ -66,11 +66,26 @@ router.get('/:id', async (req, res)=>{
 router.put('/:id', async (req, res)=>{
     try {
         // find the item that was clicked on
-        const neighborhood = await Neighborhood.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        res.send({
-            status: 200,
-            data: neighborhood
-        });
+        // const neighborhood = await Neighborhood.findByIdAndUpdate(req.params.id, req.body, {new: true});
+        const neighborhood = await Neighborhood.findById(req.params.id);
+        if (req.body.events) {
+            console.log('inside if');
+            console.log(req.body.events);
+            neighborhood.events.push(req.body.events);
+            console.log(neighborhood.events);
+            neighborhood.save();
+            res.send({
+                status: 200,
+                data: neighborhood
+            });
+        } else {
+            const entireNeighborhood = await Neighborhood.findByIdAndUpdate(req.params.id, req.body, {new: true});
+            entireNeighborhood.save();
+            res.send({
+                status: 200,
+                data: entireNeighborhood
+            });
+        }
     } catch (err) {
         res.send({
             status: 500,
